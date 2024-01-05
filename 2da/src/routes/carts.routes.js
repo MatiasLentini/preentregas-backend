@@ -41,7 +41,8 @@ cartRouter.delete("/:cid/products/pid", async (req, res) => {
     try {
         const cart = await cartModel.findById(cid)
         if (cart) {
-            cart.products.findIndex({ id_prod: pid })
+            const index = cart.products.findIndex((product) => product.id_prod === pid)
+            cart.products.splice({ id_prod: index })
             const respuesta = await cartModel.findByIdAndUpdate(cid, cart)
             res.status(200).send({ respuesta: "OK", message: respuesta })
         }
